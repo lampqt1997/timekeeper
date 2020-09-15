@@ -12,6 +12,7 @@ function StartUp(){
         <Router>
         <Switch>
         <Route exact path="/Login" component={Login}/>
+        <ProtectedRoute exact path="/" component={App}/>
         <ProtectedRoute path="/Index" component={App}/>
         <Route exact path="/404" component={NotFound}/>
         <Redirect to="/404"/>
