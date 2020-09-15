@@ -1,16 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Start from './Start';
+
 import * as serviceWorker from './serviceWorker';
 import $ from 'jquery'
 import Popper from 'popper.js'
+import Main from './Main';
+import App from './App';
 
 
 
 ReactDOM.render(
   <React.StrictMode>
-    <Start/>
+    <App/>
   </React.StrictMode>,
   document.getElementById('root')
 );
