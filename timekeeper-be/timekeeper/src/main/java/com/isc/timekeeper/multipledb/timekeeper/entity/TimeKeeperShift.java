@@ -45,11 +45,23 @@ public class TimeKeeperShift implements Serializable {
 	private LocalTime startHour;
 	private LocalTime finishHour;
 	private double shiftCoefficient;
-	private Integer dayOfWeek;
+	private Byte[] dayOfWeek;
 	private Boolean isDisable;
 	
 	@OneToMany(mappedBy="shift")
 	private List<TimeKeeperEmployeeShift> employeeShifts;
+
+	public TimeKeeperShift(String shiftCode, String shiftName, LocalTime startHour, LocalTime finishHour,
+			double shiftCoefficient, Byte[] dayOfWeek, Boolean isDisable) {
+		super();
+		this.shiftCode = shiftCode;
+		this.shiftName = shiftName;
+		this.startHour = startHour;
+		this.finishHour = finishHour;
+		this.shiftCoefficient = shiftCoefficient;
+		this.dayOfWeek = dayOfWeek;
+		this.isDisable = isDisable;
+	}
 	
 	
 }

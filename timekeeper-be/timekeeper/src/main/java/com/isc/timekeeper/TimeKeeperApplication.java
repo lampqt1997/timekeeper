@@ -1,5 +1,6 @@
 package com.isc.timekeeper;
 
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import com.isc.timekeeper.multipledb.biostar.entity.BioStarDepartment;
 import com.isc.timekeeper.multipledb.biostar.entity.BioStarEvenLog;
@@ -21,9 +27,11 @@ import com.isc.timekeeper.multipledb.biostar.service.BioStarEvenLogService;
 import com.isc.timekeeper.multipledb.biostar.service.BioStarUserService;
 import com.isc.timekeeper.multipledb.timekeeper.entity.TimeKeeperEmployee;
 import com.isc.timekeeper.multipledb.timekeeper.entity.TimeKeeperPosition;
+import com.isc.timekeeper.multipledb.timekeeper.entity.TimeKeeperShift;
 import com.isc.timekeeper.multipledb.timekeeper.service.TimeKeeperEmployeeService;
 import com.isc.timekeeper.multipledb.timekeeper.service.TimeKeeperEvenLogService;
 import com.isc.timekeeper.multipledb.timekeeper.service.TimeKeeperPositionService;
+import com.isc.timekeeper.multipledb.timekeeper.service.TimeKeeperShiftService;
 
 @SpringBootApplication
 //@EnableAutoConfiguration(exclude = { DataSourceTransactionManagerAutoConfiguration.class,
@@ -49,6 +57,13 @@ public class TimeKeeperApplication implements CommandLineRunner {
 	@Autowired
 	private TimeKeeperPositionService tkPositionService;
 	
+	@Autowired
+	private TimeKeeperShiftService tkShiftService;
+	
+	
+	
+	
+	
 	public static void main(String[] args) {
 		SpringApplication.run(TimeKeeperApplication.class, args);
 	}
@@ -60,14 +75,15 @@ public class TimeKeeperApplication implements CommandLineRunner {
 		TimeKeeperPosition po2= new TimeKeeperPosition( "Kế toán", false);
 		
 		
-		tkPositionService.addPosition(po1);
-		tkPositionService.addPosition(po2);
+//		tkPositionService.addPosition(po1);
+//		tkPositionService.addPosition(po2);
 		
-		
-		
-		
-		
-		
+//		Byte[] bs = {1,1,1,1,1,1,1};
+//		
+//		TimeKeeperShift shift = new TimeKeeperShift("CA1", "Ca 1", LocalTime.of(6, 0), LocalTime.of(14, 0),1, bs, false);
+//		
+//		tkShiftService.addShift(shift);
+//		
 		
 		
 		

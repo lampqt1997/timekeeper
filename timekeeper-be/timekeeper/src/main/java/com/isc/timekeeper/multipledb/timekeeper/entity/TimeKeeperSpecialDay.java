@@ -34,10 +34,16 @@ public class TimeKeeperSpecialDay implements Serializable {
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column(name="specialday_id", unique=true, nullable=false)
 	private Integer spId;
+	
 	@Nationalized
+	@Column(updatable=true)
 	private String spName;
+	@Column(updatable=true)
 	private LocalDate spdate;
+	
 	private double spCoefficient;
+	
+	private Boolean isDisable;
 	
 	
 	
