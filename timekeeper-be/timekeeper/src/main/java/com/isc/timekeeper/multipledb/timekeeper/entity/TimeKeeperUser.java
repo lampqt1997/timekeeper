@@ -46,7 +46,7 @@ public class TimeKeeperUser implements Serializable {
 	
 	private String email;
 	
-	private Number phoneNumber;
+	private String phoneNumber;
 	
 	private Boolean isDisable;
 	@OneToMany(mappedBy="user")

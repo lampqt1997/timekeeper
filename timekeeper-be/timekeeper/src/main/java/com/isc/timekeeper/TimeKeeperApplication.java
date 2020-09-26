@@ -1,9 +1,10 @@
 package com.isc.timekeeper;
 
-import java.time.LocalTime;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+import java.util.TimeZone;
+
+import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,27 +12,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
-import com.isc.timekeeper.multipledb.biostar.entity.BioStarDepartment;
-import com.isc.timekeeper.multipledb.biostar.entity.BioStarEvenLog;
-import com.isc.timekeeper.multipledb.biostar.entity.BioStarEvenLogBK;
-import com.isc.timekeeper.multipledb.biostar.entity.BioStarUser;
+import com.isc.timekeeper.multipledb.api.token.PasswordEncoder;
 import com.isc.timekeeper.multipledb.biostar.service.BioStarDepartmentService;
 import com.isc.timekeeper.multipledb.biostar.service.BioStarEvenLogBKService;
 import com.isc.timekeeper.multipledb.biostar.service.BioStarEvenLogService;
 import com.isc.timekeeper.multipledb.biostar.service.BioStarUserService;
-import com.isc.timekeeper.multipledb.timekeeper.entity.TimeKeeperEmployee;
+import com.isc.timekeeper.multipledb.timekeeper.entity.TimeKeeperEvenLog;
 import com.isc.timekeeper.multipledb.timekeeper.entity.TimeKeeperPosition;
-import com.isc.timekeeper.multipledb.timekeeper.entity.TimeKeeperShift;
+import com.isc.timekeeper.multipledb.timekeeper.entity.TimeKeeperUser;
 import com.isc.timekeeper.multipledb.timekeeper.service.TimeKeeperEmployeeService;
 import com.isc.timekeeper.multipledb.timekeeper.service.TimeKeeperEvenLogService;
 import com.isc.timekeeper.multipledb.timekeeper.service.TimeKeeperPositionService;
 import com.isc.timekeeper.multipledb.timekeeper.service.TimeKeeperShiftService;
+import com.isc.timekeeper.multipledb.timekeeper.service.TimeKeeperUserService;
 
 @SpringBootApplication
 //@EnableAutoConfiguration(exclude = { DataSourceTransactionManagerAutoConfiguration.class,
@@ -60,23 +54,48 @@ public class TimeKeeperApplication implements CommandLineRunner {
 	@Autowired
 	private TimeKeeperShiftService tkShiftService;
 	
-	
+	@Autowired
+	private TimeKeeperUserService tkKeeperUserService;
 	
 	
 	
 	public static void main(String[] args) {
 		SpringApplication.run(TimeKeeperApplication.class, args);
 	}
-
+	@PostConstruct
+    void started() {
+        // set JVM timezone as UTC
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+    }
 	@Override
 	public void run(String... args) throws Exception {
 		
-		TimeKeeperPosition po1 = new TimeKeeperPosition( "Công nhân", false);
-		TimeKeeperPosition po2= new TimeKeeperPosition( "Kế toán", false);
-		
-		
+//		TimeKeeperPosition po1 = new TimeKeeperPosition( "Công nhân", false);
+//		TimeKeeperPosition po2= new TimeKeeperPosition( "Kế toán", false);
 //		tkPositionService.addPosition(po1);
 //		tkPositionService.addPosition(po2);
+//		
+//		TimeKeeperUser user = TimeKeeperUser.builder()
+//				.email("lampqt1997@gmail.com")
+//				.password(PasswordEncoder.builder().build().encode("123456789"))
+//				.firstName("Lam")
+//				.userName("admin")
+//				.build();
+//		
+//		tkKeeperUserService.save(user);
+//		
+//		TimeKeeperUser u = tkKeeperUserService.getUserByUserName("admin");
+//		String passEncode = PasswordEncoder.builder().build().encode("123456789");
+//		System.out.println(passEncode);
+//		System.out.println(passEncode.equals(u.getPassword()));
+//				
+		
+//		List<TimeKeeperEvenLog> listEvents = (List<TimeKeeperEvenLog>)tkEvenLogService.getTimeKeeper(1, 50, LocalDate.of(2020, 8, 25));
+//		for (TimeKeeperEvenLog timeKeeperEvenLog : listEvents) {
+//			System.out.println(timeKeeperEvenLog.getEmployee().getEmployeeCode()+"-"+timeKeeperEvenLog.getCheckDate());
+//		}
+		
+//		
 		
 //		Byte[] bs = {1,1,1,1,1,1,1};
 //		

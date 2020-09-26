@@ -35,8 +35,16 @@ public class BioStarEvenLogService {
 	}
 	
 	public List<Object[]> getAllCustomFromIdToMax(Integer id){
-		Query q =  em.createNativeQuery("select nEventLogIdn, nUserID, dateadd(s,ndatetime,'1970-01-01 00:00:00') from TB_EVENT_LOG  where nEventLogIdn between :id and (select max(nEventLogIdn) from TB_EVENT_LOG)");
+		Query q =  em.createNativeQuery("select nEventLogIdn, nUserID, dateadd(s,ndatetime,'1970-01-01 00:00:00') from TB_EVENT_LOG  where (nEventLogIdn between :id and (select max(nEventLogIdn) from TB_EVENT_LOG)) and (nEventIdn in (55,58,59,60,61,62))");
 		q.setParameter("id", id);
+		List<Object[]> list = q.getResultList();
+		
+		return list;
+	
+	}
+	public List<Object[]> getAllCustom(){
+		Query q =  em.createNativeQuery("select nEventLogIdn, nUserID, dateadd(s,ndatetime,'1970-01-01 00:00:00') from TB_EVENT_LOG  where nEventIdn in (55,58,59,60,61,62)");
+	
 		List<Object[]> list = q.getResultList();
 		
 		return list;

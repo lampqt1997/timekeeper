@@ -15,6 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -38,10 +41,11 @@ public class TimeKeeperEvenLog implements Serializable {
 	@Column(name="evenlog_id", unique=true, nullable=false)
 	private Integer evenLogId;
 	
+	@DateTimeFormat(pattern="yyyy-MM-dd' 'HH:mm:ss")
 	private LocalDateTime checkDate;
 	
 	private Boolean isDisable;	
-	
+	@DateTimeFormat(pattern="yyyy-MM-dd' 'HH:mm:ss")
 	private LocalDateTime timeCreated;
 	
 	@ManyToOne()
@@ -51,15 +55,19 @@ public class TimeKeeperEvenLog implements Serializable {
 	@OneToMany(mappedBy="evenLog")
 	private List<TimeKeeperUpdateLog> updateLogs;
 
-	public TimeKeeperEvenLog(Integer evenLogId, LocalDateTime checkDate, Boolean isDisable, LocalDateTime timeCreated,
-			TimeKeeperEmployee employee) {
-		super();
-		this.evenLogId = evenLogId;
-		this.checkDate = checkDate;
-		this.isDisable = isDisable;
-		this.timeCreated = timeCreated;
-		this.employee = employee;
-	}
+//	public TimeKeeperEvenLog(Integer evenLogId, LocalDateTime checkDate, Boolean isDisable, LocalDateTime timeCreated,
+//			TimeKeeperEmployee employee) {
+//		super();
+//		this.evenLogId = evenLogId;
+//		this.checkDate = checkDate;
+//		this.isDisable = isDisable;
+//		this.timeCreated = timeCreated;
+//		this.employee = employee;
+//	}
+
+	
+	
+
 	
 	
 }

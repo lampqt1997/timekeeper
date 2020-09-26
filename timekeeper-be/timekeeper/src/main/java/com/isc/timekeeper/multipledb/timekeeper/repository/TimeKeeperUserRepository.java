@@ -11,4 +11,6 @@ public interface TimeKeeperUserRepository extends JpaRepository<TimeKeeperUser, 
 
 	@Query(value="select max(userId) from TimeKeeperUser ")
 	public Integer getMaxId();
+	
+	public TimeKeeperUser findTimeKeeperUserByUserName(String username);
 }
