@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Dialog from 'react-bootstrap-dialog';
 import Cookies from "js-cookie";
+
 class Header extends Component {
     constructor(props){
         super(props);
@@ -13,8 +14,10 @@ class Header extends Component {
           actions: [
             Dialog.CancelAction(),
             Dialog.OKAction(() => {
-                //Cookies.remove("loginUser");
-                this.props.history.push("/employee")
+                Cookies.remove("loginUser");
+                window.location.href = "/";
+                
+                //this.props.history.push("/employee")
 
             })
           ],
