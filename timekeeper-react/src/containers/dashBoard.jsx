@@ -13,7 +13,7 @@ class DashBoard extends Component {
         return (
             <div class="wrapper">
                 <SideBar />
-                <MainPanel />
+                <MainPanel/>
             </div>
         );
     }

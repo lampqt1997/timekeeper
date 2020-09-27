@@ -4,7 +4,7 @@ class TimeKeeper extends Component {
     state = {};
     render() {
         return (
-            <div class="content bg-white">
+            <div class="content bg-white h-100">
                 <div class="container-fluid">
                     <div class="row">
                         <ControlBar />
