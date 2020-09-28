@@ -30,11 +30,14 @@ import lombok.ToString;
 @Table(name="departments")
 public class TimeKeeperDepartment implements Serializable {
 	@Id
-//	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	@Column(name="departmen_id", unique=true, nullable=false)
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@Column(name="deId", unique=true, nullable=false)
 	private Integer departmentId;
+	@Column(name="boDeId", unique=true, nullable=false)
+	private Integer biostartDepartmentId;
 	@Nationalized
-	private String dName;
+	@Column(name="deName")
+	private String departmentName;
 	
 	private Boolean isDisable;
 	

@@ -1,5 +1,7 @@
 package com.isc.timekeeper.multipledb.timekeeper.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,5 +16,9 @@ public class TimeKeeperPositionService {
 	
 	public TimeKeeperPosition addPosition(TimeKeeperPosition tk) {
 		return tkPositionRepository.saveAndFlush(tk);
+	}
+	
+	public Optional<TimeKeeperPosition> get(Integer id) {
+		return tkPositionRepository.findById(id);
 	}
 }

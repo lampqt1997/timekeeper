@@ -10,4 +10,5 @@ public interface TimeKeeperPositionRepository extends JpaRepository<TimeKeeperPo
 	@Query(value="select max(positionId) from TimeKeeperPosition ")
 	public Integer getMaxId();
 	
+	
 }

@@ -26,7 +26,7 @@ public class TimeKeeperDepartmentService {
 	}
 	
 	public Optional<TimeKeeperDepartment> get(Integer id) {
-		return tkDepartmentRepository.findById(id);
+		return tkDepartmentRepository.findByBiostartDepartmentId(id);
 	}
 
 }

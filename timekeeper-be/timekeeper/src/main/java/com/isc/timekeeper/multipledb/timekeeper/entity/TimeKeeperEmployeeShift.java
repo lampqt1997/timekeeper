@@ -25,14 +25,15 @@ import lombok.ToString;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = {"employeeShiftId"})
+@EqualsAndHashCode(exclude = {"emShiftId"})
 @ToString(exclude = {""})
 @Table(name="employeeshifts")
 public class TimeKeeperEmployeeShift implements Serializable {
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column(name="emshift_id", unique=true, nullable=false)
-	private Integer employeeShiftId;
+	private Integer emShiftId;
+	private Integer boEmShiftId;
 	
 	private LocalDate fromDate;
 	private LocalDate toDate;
@@ -43,8 +44,9 @@ public class TimeKeeperEmployeeShift implements Serializable {
 	private TimeKeeperShift shift;
 	
 	@ManyToOne
-	@JoinColumn(name = "employee_id")
+	@JoinColumn(name = "employee_Code",referencedColumnName="eCode")
 	private TimeKeeperEmployee employee;
+	
 	
 	
 	

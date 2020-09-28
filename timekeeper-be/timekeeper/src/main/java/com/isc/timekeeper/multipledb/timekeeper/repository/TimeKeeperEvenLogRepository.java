@@ -9,7 +9,7 @@ import com.isc.timekeeper.multipledb.timekeeper.entity.TimeKeeperEvenLog;
 @Repository
 public interface TimeKeeperEvenLogRepository extends JpaRepository<TimeKeeperEvenLog, Integer> {
 	
-	@Query(value="select max(evenLogId) from TimeKeeperEvenLog  ")
+	@Query(value="select max(biostartEvenLogId) from TimeKeeperEvenLog  ")
 	public Integer getMaxId();
 	
 	

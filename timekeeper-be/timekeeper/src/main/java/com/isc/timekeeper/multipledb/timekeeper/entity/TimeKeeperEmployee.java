@@ -18,9 +18,6 @@ import org.hibernate.annotations.Nationalized;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -40,10 +37,14 @@ import lombok.ToString;
 public class TimeKeeperEmployee implements Serializable {
 	
 	@Id
-//	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@NotFound(action = NotFoundAction.IGNORE)
 	@Column(name="eId", unique=true, nullable=false)
 	private Integer employeeId;
+	@Column(name="boEId")
+	private Integer biostartEmployeeId;
+	
+	
 	@Column(name="eCode")
 	private String employeeCode;
 	@Nationalized

@@ -2,6 +2,7 @@ package com.isc.timekeeper;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
@@ -18,6 +19,7 @@ import com.isc.timekeeper.multipledb.biostar.service.BioStarDepartmentService;
 import com.isc.timekeeper.multipledb.biostar.service.BioStarEvenLogBKService;
 import com.isc.timekeeper.multipledb.biostar.service.BioStarEvenLogService;
 import com.isc.timekeeper.multipledb.biostar.service.BioStarUserService;
+import com.isc.timekeeper.multipledb.timekeeper.entity.TimeKeeperEmployee;
 import com.isc.timekeeper.multipledb.timekeeper.entity.TimeKeeperEvenLog;
 import com.isc.timekeeper.multipledb.timekeeper.entity.TimeKeeperPosition;
 import com.isc.timekeeper.multipledb.timekeeper.entity.TimeKeeperUser;
@@ -69,6 +71,11 @@ public class TimeKeeperApplication implements CommandLineRunner {
     }
 	@Override
 	public void run(String... args) throws Exception {
+		
+//		Optional<TimeKeeperEmployee> employee = tkEmployeeService.getByCode("30075");
+//		System.out.println(employee.get().getPosition());
+//		System.out.println(employee.get().getDepartment());
+		
 		
 //		TimeKeeperPosition po1 = new TimeKeeperPosition( "Công nhân", false);
 //		TimeKeeperPosition po2= new TimeKeeperPosition( "Kế toán", false);

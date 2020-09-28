@@ -39,13 +39,13 @@ public class TimeKeeperEvenLogService {
 		int offset = numberOfResult * (page-1);
 
 		Query query = em.createNativeQuery(
-				"select * from evenlogs ev where year(ev.checkDate) = :y and month(ev.checkDate) = :m and day(ev.checkDate) = :d order by ev.employee_id OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY");
+				"select * from evenlogs ev where year(ev.eCheckDate) = :y and month(ev.eCheckDate) = :m and day(ev.eCheckDate) = :d order by ev.employee_Code OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY",TimeKeeperEvenLog.class);
 		query.setParameter("y", date.getYear());
 		query.setParameter("m", date.getMonthValue());
 		query.setParameter("d", date.getDayOfMonth());
 		query.setParameter("offset", offset);
 		query.setParameter("limit", numberOfResult);
-		List<TimeKeeperEvenLog> listEvents = query.getResultList();
+		List<TimeKeeperEvenLog> listEvents = (List<TimeKeeperEvenLog>)query.getResultList();
 		return  listEvents;
 	}
 	
@@ -55,7 +55,7 @@ public class TimeKeeperEvenLogService {
 		LocalDate today = LocalDate.now();
 		
 		Query query = em.createNativeQuery(
-				"select * from evenlogs ev where year(ev.checkDate) = :y and month(ev.checkDate) = :m and day(ev.checkDate) = :d order by ev.employee_id OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY");
+				"select * from evenlogs ev where year(ev.eCheckDate) = :y and month(ev.eCheckDate) = :m and day(ev.eCheckDate) = :d order by ev.employee_Code OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY",TimeKeeperEvenLog.class);
 		query.setParameter("y", today.getYear());
 		query.setParameter("m", today.getMonthValue());
 		query.setParameter("d", today.getDayOfMonth());
@@ -69,7 +69,7 @@ public class TimeKeeperEvenLogService {
 	public int countRecordCurrent() {
 		LocalDate today = LocalDate.now();
 		Query query = em.createNativeQuery(
-				"select count(ev.evenlog_id) from evenlogs ev where (year(ev.checkDate) = :y ) and (month(ev.checkDate) = :m ) and ( day(ev.checkDate) = :d ) ");
+				"select count(ev.evId) from evenlogs ev where (year(ev.eCheckDate) = :y ) and (month(ev.eCheckDate) = :m ) and ( day(ev.eCheckDate) = :d ) ");
 		query.setParameter("y", today.getYear());
 		query.setParameter("m", today.getMonthValue());
 		query.setParameter("d", today.getDayOfMonth());
@@ -79,7 +79,7 @@ public class TimeKeeperEvenLogService {
 	
 	public int countRecordByDate(LocalDate date) {
 		Query query = em.createNativeQuery(
-				"select count(evenlog_id) from evenlogs where year(checkDate) = :y and month(checkDate) = :m and day(checkDate) = :d ");
+				"select count(evId) from evenlogs where year(eCheckDate) = :y and month(eCheckDate) = :m and day(eCheckDate) = :d ");
 		query.setParameter("y", date.getYear());
 		query.setParameter("m", date.getMonthValue());
 		query.setParameter("d", date.getDayOfMonth());

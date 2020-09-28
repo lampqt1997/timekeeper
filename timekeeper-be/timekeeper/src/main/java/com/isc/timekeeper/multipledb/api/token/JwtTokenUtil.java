@@ -5,6 +5,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
+import javax.persistence.NoResultException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
@@ -128,14 +129,26 @@ public class JwtTokenUtil {
 	}
 
 	public Boolean validateToken(String token, String username) {
-		TimeKeeperUser user = tkUserService.getUserByUserName(username);
+		TimeKeeperUser user = null;
+		try {
+			user = tkUserService.getUserByUserName(username);
+			if (user==null) {
+				return false;
+			}else {
+				return (username != null && username.equals(user.getUserName()));	
+			}
+		} catch (NoResultException e) {
+			return false;
+		}
+		
+		
 //		final String uName = getUsernameFromToken(token);
-		final Date created = getIssuedAtDateFromToken(token);
-		LocalDateTime dateTime = LocalDateTime.now();
-		ZonedDateTime zdt = dateTime.atZone(ZoneId.systemDefault());
-		Date date = Date.from(zdt.toInstant());
-		return (username != null && username.equals(user.getUserName())
-				&& !isCreatedBeforeLastPasswordReset(created, date));
+//		final Date created = getIssuedAtDateFromToken(token);
+//		LocalDateTime dateTime = LocalDateTime.now();
+//		ZonedDateTime zdt = dateTime.atZone(ZoneId.systemDefault());
+//		Date date = Date.from(zdt.toInstant());
+		
+//				&& !isCreatedBeforeLastPasswordReset(created, date));
 	}
 		/**
 		 * Check the valid token

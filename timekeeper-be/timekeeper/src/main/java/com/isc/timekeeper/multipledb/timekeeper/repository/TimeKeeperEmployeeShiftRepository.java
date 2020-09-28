@@ -8,6 +8,6 @@ import com.isc.timekeeper.multipledb.timekeeper.entity.TimeKeeperEmployeeShift;
 
 @Repository
 public interface TimeKeeperEmployeeShiftRepository extends JpaRepository<TimeKeeperEmployeeShift, Integer> {
-	@Query(value="select max(employeeShiftId) from TimeKeeperEmployeeShift ")
+	@Query(value="select max(boEmShiftId) from TimeKeeperEmployeeShift ")
 	public Integer getMax();
 }

@@ -13,7 +13,7 @@ public interface TimeKeeperEmployeeRepository extends JpaRepository<TimeKeeperEm
 
 	
 
-	@Query(value="select max(employeeId) from TimeKeeperEmployee ")
+	@Query(value="select max(biostartEmployeeId) from TimeKeeperEmployee ")
 	public Integer getMax();
 	
 	@Query(value="SELECT DISTINCT e FROM TimeKeeperEmployee e INNER JOIN FETCH e.department INNER JOIN FETCH e.position where e.employeeCode = :code")

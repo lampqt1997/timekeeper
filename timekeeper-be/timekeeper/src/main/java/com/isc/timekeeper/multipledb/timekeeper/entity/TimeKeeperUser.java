@@ -29,18 +29,19 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = {"userId"})
-@ToString(exclude = {""})
+@ToString(exclude = {"updateLogs"})
 @Table(name="users")
 
 public class TimeKeeperUser implements Serializable {
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	@Column(name="user_id", unique=true, nullable=false)
+	@Column(name="uId", unique=true, nullable=false)
 	private Integer userId;
-	
+	@Column(name="username")
 	private String userName;
 	
 	private String password;
+	
 	@Nationalized
 	private String firstName;
 	
@@ -49,6 +50,7 @@ public class TimeKeeperUser implements Serializable {
 	private String phoneNumber;
 	
 	private Boolean isDisable;
+	
 	@OneToMany(mappedBy="user")
 	private List<TimeKeeperUpdateLog> updateLogs;
 	

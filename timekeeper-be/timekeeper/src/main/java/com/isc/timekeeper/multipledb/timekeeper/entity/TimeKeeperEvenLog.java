@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,19 +38,23 @@ import lombok.ToString;
 
 public class TimeKeeperEvenLog implements Serializable {
 	@Id
-//	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	@Column(name="evenlog_id", unique=true, nullable=false)
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@Column(name="evId", unique=true, nullable=false)
 	private Integer evenLogId;
 	
-	@DateTimeFormat(pattern="yyyy-MM-dd' 'HH:mm:ss")
-	private LocalDateTime checkDate;
+	@Column(name="boEvId", unique=true, nullable=false)
+	private Integer biostartEvenLogId;
 	
-	private Boolean isDisable;	
-	@DateTimeFormat(pattern="yyyy-MM-dd' 'HH:mm:ss")
-	private LocalDateTime timeCreated;
 	
+	@DateTimeFormat(pattern="yyyy-MM-dd' 'HH:mm:ss")
+	private LocalDateTime eCheckDate;
+	
+	@DateTimeFormat(pattern="yyyy-MM-dd' 'HH:mm:ss")
+	private LocalDateTime eTimeCreated;
+	
+	private Boolean isDisable;
 	@ManyToOne()
-	@JoinColumn(name="employee_id")
+	@JoinColumn(name="employee_Code",referencedColumnName="eCode")
 	private TimeKeeperEmployee employee;
 	
 	@OneToMany(mappedBy="evenLog")

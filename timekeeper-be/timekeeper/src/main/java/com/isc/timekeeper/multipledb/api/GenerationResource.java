@@ -31,6 +31,7 @@ import com.isc.timekeeper.multipledb.timekeeper.entity.TimeKeeperPosition;
 import com.isc.timekeeper.multipledb.timekeeper.service.TimeKeeperDepartmentService;
 import com.isc.timekeeper.multipledb.timekeeper.service.TimeKeeperEmployeeService;
 import com.isc.timekeeper.multipledb.timekeeper.service.TimeKeeperEvenLogService;
+import com.isc.timekeeper.multipledb.timekeeper.service.TimeKeeperPositionService;
 @CrossOrigin(origins = "*", maxAge = 3600)
 
 @RestController
@@ -54,42 +55,23 @@ public class GenerationResource {
 	private TimeKeeperDepartmentService tkDepartmentService;
 	@Autowired
 	private BioStarDepartmentService bDepartmentService;
+	//Position
+	@Autowired
+	private TimeKeeperPositionService tkPositionService;
 
 	@GetMapping(path = "/copy/evenlog")
 	public String copyEvenLogFromBioStarToTimeKeeper() throws Exception {
 		Integer idEvenTimeKeeper = 0;
 		List<TimeKeeperEvenLog> evenLogs = null;
 		idEvenTimeKeeper = tkEvenLogService.getCurrent() == null ? 0 : tkEvenLogService.getCurrent();
-//		List<Object[]> userEvenLogs = bEvenLogService.getAllCustomFromIdToMax(idEvenTimeKeeper);
-//		List<Object[]> userEvenLogBKs = bEvenLogBKService.getAllCustomFromIdToMax(idEvenTimeKeeper);
-		List<Object[]> userEvenLogs = bEvenLogService.getAllCustom();
-		List<Object[]> userEvenLogBKs = bEvenLogBKService.getAllCustom();
+
+		List<Object[]> biostarEvens = bEvenLogService.getAllCustom();
+		List<Object[]> biostarEvenBKs = bEvenLogBKService.getAllCustom();
 		evenLogs = new ArrayList<>();
-		for (Object[] objects : userEvenLogs) {
-			Optional<TimeKeeperEmployee> te = tkEmployeeService.getByCode(objects[1].toString());
-			if (te != null) {
-				evenLogs.add(TimeKeeperEvenLog.builder().evenLogId((Integer) objects[0])
-						.checkDate( ((Timestamp) objects[2]).toLocalDateTime()).isDisable(false).timeCreated(LocalDateTime.now())
-						.employee(te.get()).build());
-			} else {
-
-				continue;
-			}
-
-		}
-		for (Object[] objects2 : userEvenLogBKs) {
-			Optional<TimeKeeperEmployee> te = tkEmployeeService.getByCode(objects2[1].toString());
-			if (te != null) {
-				evenLogs.add(TimeKeeperEvenLog.builder().evenLogId((Integer) objects2[0])
-						.checkDate( ((Timestamp) objects2[2]).toLocalDateTime()).isDisable(false).timeCreated(LocalDateTime.now())
-						.employee(te.get()).build());
-			} else {
-
-				continue;
-			}
-
-		}
-		System.out.println(evenLogs);
+		
+		addNewFromBiostar(evenLogs, biostarEvens) ;
+		addNewFromBiostar(evenLogs, biostarEvenBKs) ;
+//		System.out.println(evenLogs);
 		tkEvenLogService.saveAll(evenLogs);
 		return evenLogs.toString();
 	}
@@ -106,8 +88,9 @@ public class GenerationResource {
 			
 				employees = new ArrayList<>();
 				for (Object[] objs : users) {
+					
 					employees.add(TimeKeeperEmployee.builder()
-							.employeeId((Integer) objs[0])
+							.biostartEmployeeId((Integer) objs[0])
 							.employeeCode(objs[1].toString())
 							.firstName(objs[2].toString().substring(0,objs[2].toString().lastIndexOf(" ") ))
 							.lastName(objs[2].toString().substring(objs[2].toString().lastIndexOf(" "),objs[2].toString().length() ))
@@ -116,24 +99,13 @@ public class GenerationResource {
 							.address("")
 							.phoneNumber(objs[5].toString())
 							.isDisable(false)
-							.position(TimeKeeperPosition.builder().positionId(1).pName("Công nhân").build())
+							.position(tkPositionService.get(1).get())
 							.department(tkDepartmentService.get((Integer) objs[6]).get()).build());
 					tkEmployeeService.saveAll(employees);
 				}
 			}
 		} catch (NullPointerException e) {
-//			System.out.println(e.getMessage());
-//			idEmployeeMax = 0;
-//			List<BioStarUser> bList = bUserService.getFromIdToMax(idEmployeeMax);
-//			employees = new ArrayList<>();
-//			for (BioStarUser bu : bList) {
-//				employees.add(TimeKeeperEmployee.builder().employeeId(bu.getNUserIdn()).firstName("").lastName("")
-//						.startDate(new Date(bu.getNStartDate()).toLocalDate())
-//						.endDate(new Date(bu.getNEndDate()).toLocalDate()).address("").phoneNumber("0987654231").isDisable(false)
-//						.position(TimeKeeperPosition.builder().positionId(1).pName("Công nhân").build())
-//						.department(TimeKeeperDepartment.builder().departmentId(1).dName("").build()).build());
-//				tkEmployeeService.saveAll(employees);
-//			}
+
 		}
 
 		return employees.toString();
@@ -150,24 +122,102 @@ public class GenerationResource {
 				List<BioStarDepartment> bList = bDepartmentService.getFromIdToMax(idDepartment);
 				tList = new ArrayList<>();
 				for (BioStarDepartment tkd : bList) {
-					tList.add(TimeKeeperDepartment.builder().departmentId(tkd.getNDepartmentIdn()).dName(tkd.getSName())
+					tList.add(TimeKeeperDepartment.builder()
+							.biostartDepartmentId(tkd.getNDepartmentIdn())
+							.departmentName(tkd.getSName())
 							.isDisable(false).build());
 				}
 				tkDepartmentService.saveAll(tList);
 			}
 		} catch (NullPointerException e) {
-			System.out.println(e.getMessage());
-			System.out.println("null");
-			idDepartment = 0;
-			List<BioStarDepartment> bList = bDepartmentService.getFromIdToMax(idDepartment);
-			tList = new ArrayList<>();
-			for (BioStarDepartment tkd : bList) {
-				tList.add(TimeKeeperDepartment.builder().departmentId(tkd.getNDepartmentIdn()).dName(tkd.getSName())
-						.isDisable(false).build());
-			}
-			tkDepartmentService.saveAll(tList);
+
 		}
 
 		return tList.toString();
 	}
+
+	public List<TimeKeeperEvenLog> addNewFromBiostar(List<TimeKeeperEvenLog> evenLogs, List<Object[]> biostartEvenlogs  ){
+		for (Object[] objects : biostartEvenlogs) {
+			Optional<TimeKeeperEmployee> te = tkEmployeeService.getByCode(objects[1].toString());
+			if (te != null) {
+				evenLogs.add(TimeKeeperEvenLog.builder()
+						.biostartEvenLogId((Integer) objects[0])
+						.eCheckDate( ((Timestamp) objects[2]).toLocalDateTime())						
+						.eTimeCreated(LocalDateTime.now())
+						.isDisable(false)
+						.employee(te.get()).build());
+			} else {
+
+				continue;
+			}
+
+		}
+		return evenLogs;
+	}
+
+
+
+
+
+
+
+
 }
+//List<Object[]> userEvenLogs = bEvenLogService.getAllCustomFromIdToMax(idEvenTimeKeeper);
+//List<Object[]> userEvenLogBKs = bEvenLogBKService.getAllCustomFromIdToMax(idEvenTimeKeeper);
+//for (Object[] objects : userEvenLogs) {
+//Optional<TimeKeeperEmployee> te = tkEmployeeService.getByCode(objects[1].toString());
+//if (te != null) {
+//	evenLogs.add(TimeKeeperEvenLog.builder()
+//			.biostartEvenLogId((Integer) objects[0])
+//			.eCheckDate( ((Timestamp) objects[2]).toLocalDateTime())						
+//			.eTimeCreated(LocalDateTime.now())
+//			.isDisable(false)
+//			.employee(te.get()).build());
+//} else {
+//
+//	continue;
+//}
+//
+//}
+//for (Object[] objects2 : userEvenLogBKs) {
+//Optional<TimeKeeperEmployee> te = tkEmployeeService.getByCode(objects2[1].toString());
+//if (te != null) {
+//	evenLogs.add(TimeKeeperEvenLog.builder()
+//			.biostartEvenLogId((Integer) objects2[0])
+//			.eCheckDate( ((Timestamp) objects2[2]).toLocalDateTime())
+//			.eTimeCreated(LocalDateTime.now())		
+//			.isDisable(false)
+//			.employee(te.get()).build());
+//} else {
+//
+//	continue;
+//}
+//
+//}
+//try catch
+//System.out.println(e.getMessage());
+//idEmployeeMax = 0;
+//List<BioStarUser> bList = bUserService.getFromIdToMax(idEmployeeMax);
+//employees = new ArrayList<>();
+//for (BioStarUser bu : bList) {
+//	employees.add(TimeKeeperEmployee.builder().employeeId(bu.getNUserIdn()).firstName("").lastName("")
+//			.startDate(new Date(bu.getNStartDate()).toLocalDate())
+//			.endDate(new Date(bu.getNEndDate()).toLocalDate()).address("").phoneNumber("0987654231").isDisable(false)
+//			.position(TimeKeeperPosition.builder().positionId(1).pName("Công nhân").build())
+//			.department(TimeKeeperDepartment.builder().departmentId(1).dName("").build()).build());
+//	tkEmployeeService.saveAll(employees);
+//}
+// try catch
+//System.out.println(e.getMessage());
+//System.out.println("null");
+//idDepartment = 0;
+//List<BioStarDepartment> bList = bDepartmentService.getFromIdToMax(idDepartment);
+//tList = new ArrayList<>();
+//for (BioStarDepartment tkd : bList) {
+//	tList.add(TimeKeeperDepartment.builder()
+//			.departmentId(tkd.getNDepartmentIdn())
+//			.departmentName(tkd.getSName())
+//			.isDisable(false).build());
+//}
+//tkDepartmentService.saveAll(tList);
