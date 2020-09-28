@@ -206,6 +206,7 @@ h1 .subtitle {
 
 /*     General overwrite     */
 
+
 body,
 .wrapper {
     min-height: 100vh;
@@ -2104,7 +2105,7 @@ fieldset[disabled] .form-control {
 }
 
 .navbar.fixed {
-    width: calc(100% - $sidebar-width);
+    width: calc(100% - sidebar-width);
     right: 0;
     left: auto;
     border-radius: 0;
@@ -2928,7 +2929,7 @@ Copyright (c) 2015 Daniel Eden
     top: 0;
     width: 1px;
     background-color: #DDDDDD;
-    card-body: "";
+    caret-color: "";
     position: absolute;
 }
 
@@ -4486,7 +4487,7 @@ Copyright (c) 2015 Daniel Eden
         display: none;
     }
     .navbar-fixed-top {
-        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
     }
     #bodyClick {
         height: 100%;
@@ -4737,7 +4738,6 @@ License - nucleoapp.com/license/
     display: inline-block;
     font: normal normal normal 14px/1 'nucleo-icons';
     font-size: inherit;
-    speak: none;
     text-transform: none;
     /* Better Font Rendering */
     -webkit-font-smoothing: antialiased;

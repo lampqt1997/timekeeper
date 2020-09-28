@@ -1,7 +1,34 @@
 import React, { Component } from 'react';
+import Dialog from 'react-bootstrap-dialog';
+import Cookies from "js-cookie";
 
 class Header extends Component {
-	state = {  }
+    constructor(props){
+        super(props);
+        this.logoutComfirm=this.logoutComfirm.bind(this)
+    }
+    logoutComfirm=()=>{
+        this.dialog.show({
+          title: 'Đăng xuất?',
+          body: 'Bạn muốn đăng xuất?',
+          actions: [
+            Dialog.CancelAction(),
+            Dialog.OKAction(() => {
+                Cookies.remove("loginUser");
+                window.location.href = "/";
+                
+                //this.props.history.push("/employee")
+
+            })
+          ],
+          bsSize: 'small',
+          onHide: (dialog) => {
+            dialog.hide()
+          }
+        })
+    }
+
+
 	render() { 
 		return ( 
 			<nav
@@ -33,48 +60,19 @@ class Header extends Component {
                                         <span class="no-icon">Account</span>
                                     </a>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a
-                                        class="nav-link dropdown-toggle"
-                                        href="http://example.com"
-                                        id="navbarDropdownMenuLink"
-                                        data-toggle="dropdown"
-                                        aria-haspopup="true"
-                                        aria-expanded="false"
-                                    >
-                                        <span class="no-icon">Dropdown</span>
-                                    </a>
-                                    <div
-                                        class="dropdown-menu"
-                                        aria-labelledby="navbarDropdownMenuLink"
-                                    >
-                                        <a class="dropdown-item" href="#">
-                                            Action
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            Another action
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            Something
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            Something else here
-                                        </a>
-                                        <div class="divider"></div>
-                                        <a class="dropdown-item" href="#">
-                                            Separated link
-                                        </a>
-                                    </div>
-                                </li>
+                               
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#pablo">
+                                    <a class="nav-link"  onClick={()=>this.logoutComfirm()}>
                                         <span class="no-icon">Log out</span>
                                     </a>
                                 </li>
                             </ul>
                         </div>
                     </div>
+                    <Dialog ref={(el) => { this.dialog = el }} />
                 </nav>
+
+        
 		 );
 	}
 }
